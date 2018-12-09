@@ -395,14 +395,11 @@ func GetPixels(img image.Image) [][]colorful.Color {
 	for y := bounds.Min.Y; y < bounds.Max.Y; y++ {
 		dj := 0
 		for x := bounds.Min.X; x < bounds.Max.X; x++ {
-			// Workaround panic in go-colorful when alpha is 0
-			_, _, _, alpha := img.At(x, y).RGBA()
-			if alpha == 0 {
-				// Default to white when transparent
-				pixels[di][dj] = colorful.Color{R: 1.0, G: 1.0, B: 1.0}
-			} else {
-				pixels[di][dj] = colorful.MakeColor(img.At(x, y))
+			color, alpha := colorful.MakeColor(img.At(x, y))
+			if !alpha {
+				color = colorful.Color{R: 1.0, G: 1.0, B: 1.0}
 			}
+			pixels[di][dj] = color
 			dj++
 		}
 		di++
