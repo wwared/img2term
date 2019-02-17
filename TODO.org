@@ -1,0 +1,4 @@
+* TODO implement gif.DisposalNone and gif.DisposalPrevious (re-add animation code)
+* TODO make sure every gif frame has the correct output resolution
+* TODO automatically scan env var for /256color/ or equivalent and use that by default, add -16 option
+* TODO add a readme file

@@ -8,3 +8,5 @@ golang.org/x/image v0.0.0-20181116024801-cd38e8056d9b h1:VHyIDlv3XkfCa5/a81uzaoD
 golang.org/x/image v0.0.0-20181116024801-cd38e8056d9b/go.mod h1:ux5Hcp/YLpHSI86hEcLt0YII63i6oz57MZXIpbrjZUs=
 golang.org/x/sys v0.0.0-20181208175041-ad97f365e150 h1:a+Y1JYYfPXfb6xhWlOV++uijPyhhJy5Y/ROUAOZSre4=
 golang.org/x/sys v0.0.0-20181208175041-ad97f365e150/go.mod h1:STP8DvDyc/dI5b8T5hshtkjS+E42TnysNCUPdjciGhY=
+gopkg.in/DATA-DOG/go-sqlmock.v1 v1.3.0 h1:FVCohIoYO7IJoDDVpV2pdq7SgrMH6wHnuTyrdrxJNoY=
+gopkg.in/DATA-DOG/go-sqlmock.v1 v1.3.0/go.mod h1:OdE7CF6DbADk7lN8LIKRzRJTTZXIjtWgA5THM5lhBAw=
