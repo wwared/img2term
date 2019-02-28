@@ -57,6 +57,6 @@ func main() {
 	for _, file := range flag.Args() {
 		img := DecodeImage(file)
 		res := RenderToText(img, *flagGrayscale, *flagAutocrop, *flagSpaces, w, h, mode)
-		fmt.Println(res)
+		fmt.Print(res)
 	}
 }
