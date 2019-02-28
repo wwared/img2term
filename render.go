@@ -167,7 +167,7 @@ func GetPixels(img image.Image) [][]Pixel {
 }
 
 func ColorDistance(mode RenderMode, c1 colorful.Color, c2 colorful.Color) float64 {
-	if mode == irc || mode == term16 { // heuristic; I think it looks nicer
+	if mode == term16 { // heuristic; I think it looks nicer
 		return c1.DistanceLuv(c2)
 	} else {
 		return c1.DistanceLab(c2)
