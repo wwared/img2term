@@ -2,3 +2,9 @@
 * TODO make sure every gif frame has the correct output resolution
 * TODO automatically scan env var for /256color/ or equivalent and use that by default, add -16 option
 * TODO add a readme file
+* TODO add version number and make a img2term package that can be imported
+* TODO remove all log.Fatals outside of main()
+* TODO make a grayscale filter that doesnt throw away the alpha channel
+* TODO use goroutines for getting color palettes so 256 color mode isnt slow
+* TODO also try optimizing by using rgb distance as a guide
+* TODO see how colorful distanceLab/Luv works internally to figure out ways to optimize it
