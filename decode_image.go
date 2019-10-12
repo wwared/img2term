@@ -9,7 +9,6 @@ import (
 	"os"
 )
 
-
 func DecodeImage(path string) image.Image {
 	file, err := os.Open(path)
 	defer file.Close()

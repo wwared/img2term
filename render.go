@@ -129,7 +129,7 @@ func CropBorders(img image.Image) image.Image {
 	result := image.NewRGBA(image.Rect(0, 0, w-ix, h-iy))
 	for y := 0; y < h; y++ {
 		for x := 0; x < w; x++ {
-			result.Set(x, y, img.At(ix + x, iy + y))
+			result.Set(x, y, img.At(ix+x, iy+y))
 		}
 	}
 	return result
@@ -226,8 +226,10 @@ func ColorString(mode RenderMode, px Pixel) string {
 		return fmt.Sprintf("%d;%d;%d", r, g, b)
 	}
 	result := 0
-	dist := ColorDistance(mode, px.color, colors[mode][0])
-	for i := 0; i < len(colors[mode]); i++ {
+	last := len(colors[mode]) - 1
+	dist := ColorDistance(mode, px.color, colors[mode][last])
+	// start from the end so higher color indices are favored in the irc palette
+	for i := last - 1; i >= 0; i-- {
 		d := ColorDistance(mode, px.color, colors[mode][i])
 		if d < dist {
 			dist = d
@@ -283,7 +285,6 @@ func Clear(mode RenderMode) string {
 }
 
 func Render(mode RenderMode, use_spaces bool, colors [][]Pixel) string {
-	ix, iy, w, h := 0, 0, len(colors[0]), len(colors)
 	var buffer bytes.Buffer
 	ch := ""
 	step := 2
@@ -293,16 +294,16 @@ func Render(mode RenderMode, use_spaces bool, colors [][]Pixel) string {
 		step = 1
 	}
 
-	for y := iy; y < h; y += step {
+	for y := 0; y < len(colors); y += step {
 		var prev_fg_col string
 		var prev_bg_col string
-		for x := ix; x < w; x++ {
+		for x := 0; x < len(colors[0]); x++ {
 			next_fg_col := ColorString(mode, colors[y][x])
 			next_bg_col := ""
 			// Process two vertical pixels per column unless we're printing spaces
 			if !use_spaces {
 				ch = "▀"
-				if y+1 < h {
+				if y+1 < len(colors) {
 					next_bg_col = ColorString(mode, colors[y+1][x])
 				}
 				if next_fg_col == "" {
@@ -317,6 +318,13 @@ func Render(mode RenderMode, use_spaces bool, colors [][]Pixel) string {
 			} else {
 				next_bg_col = next_fg_col
 				next_fg_col = ""
+			}
+
+			if (next_bg_col == "" && prev_bg_col != "") ||
+				(next_fg_col == "" && prev_fg_col != "") {
+				buffer.WriteString(Clear(mode))
+				prev_bg_col = ""
+				prev_fg_col = ""
 			}
 
 			if next_fg_col == "" && next_bg_col == "" {

@@ -7,6 +7,7 @@ const TRANSPARENCY_THRESHOLD uint32 = 8192
 
 // Render modes
 type RenderMode int
+
 const (
 	term16    RenderMode = iota
 	term256   RenderMode = iota
@@ -398,5 +399,6 @@ var colors = [][]colorful.Color{
 		{R: 158.0 / 255.0, G: 158.0 / 255.0, B: 158.0 / 255.0},
 		{R: 188.0 / 255.0, G: 188.0 / 255.0, B: 188.0 / 255.0},
 		{R: 228.0 / 255.0, G: 228.0 / 255.0, B: 228.0 / 255.0},
+		{R: 1.0, G: 1.0, B: 1.0},
 	},
 }
