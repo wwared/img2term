@@ -8,3 +8,5 @@
 * TODO use goroutines for getting color palettes so 256 color mode isnt slow
 * TODO also try optimizing by using rgb distance as a guide
 * TODO see how colorful distanceLab/Luv works internally to figure out ways to optimize it
+use the fast approximations go-colorful has for distance, also write something
+to cache the calculated values for the palette colors
