@@ -17,6 +17,7 @@ func main() {
 	flagIRC := flag.Bool("irc", false, "Output IRC color codes")
 	flag256 := flag.Bool("256", false, "Use 256 colors")
 	flag24bit := flag.Bool("24bit", false, "Use 24-bit colors")
+	flagBraille := flag.Bool("braille", false, "Use braille characters") // TODO add color support
 
 	// flagAnimated := flag.Bool("animated", false, "Animated GIF playback")
 	flagSpaces := flag.Bool("spaces", false, "Use 2 spaces per pixel instead of fitting two pixels in ▀")
@@ -56,6 +57,9 @@ func main() {
 	}
 	if *flagIRC {
 		setMode(irc)
+	}
+	if *flagBraille {
+		setMode(braille)
 	}
 	w, h := *flagResizeW, *flagResizeH
 	if *flagAutoresize {

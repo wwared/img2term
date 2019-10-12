@@ -12,6 +12,7 @@ const (
 	term256   RenderMode = iota
 	term24bit RenderMode = iota
 	irc       RenderMode = iota
+	braille   RenderMode = iota
 )
 
 // Colors

@@ -3,11 +3,13 @@ package main
 import (
 	"bytes"
 	"fmt"
-	"github.com/disintegration/imaging"
-	"github.com/lucasb-eyer/go-colorful"
 	"image"
 	"image/color"
 	"strconv"
+
+	"github.com/disintegration/imaging"
+	"github.com/exrook/drawille-go"
+	"github.com/lucasb-eyer/go-colorful"
 )
 
 type Pixel struct {
@@ -17,7 +19,7 @@ type Pixel struct {
 
 // Rendering entrypoint
 func RenderToText(img image.Image, grayscale bool, autocrop bool, use_spaces bool, width int, height int, mode RenderMode) string {
-	if grayscale {
+	if grayscale || mode == braille {
 		img = Grayscale(img)
 	}
 	if autocrop {
@@ -30,6 +32,9 @@ func RenderToText(img image.Image, grayscale bool, autocrop bool, use_spaces boo
 		if width != 0 && img.Bounds().Size().X > width {
 			img = imaging.Resize(img, width, 0, imaging.NearestNeighbor)
 		}
+	}
+	if mode == braille {
+		return RenderBraille(GetPixels(img))
 	}
 	return Render(mode, use_spaces, GetPixels(img))
 }
@@ -177,6 +182,37 @@ func ColorDistance(mode RenderMode, c1 colorful.Color, c2 colorful.Color) float6
 func IsTransparent(c color.Color) bool {
 	_, _, _, alpha := c.RGBA()
 	return alpha < TRANSPARENCY_THRESHOLD
+}
+
+func RenderBraille(colors [][]Pixel) string {
+	const braille_threshold = 0.5
+	// NOTE: the input image is always grayscale here
+	canvas := drawille.NewCanvas()
+
+	for y := 0; y < len(colors); y++ {
+		for x := 0; x < len(colors[0]); x++ {
+			oldpx := colors[y][x].color.R
+			quant_error := oldpx
+			if oldpx >= braille_threshold {
+				canvas.Set(x, y)
+				quant_error -= 1.0
+			}
+			if x+1 < len(colors[0]) {
+				colors[y][x+1].color.R = colors[y][x+1].color.R + quant_error*(7.0/16.0)
+			}
+			if y+1 < len(colors) {
+				if x > 0 {
+					colors[y+1][x-1].color.R = colors[y+1][x-1].color.R + quant_error*(3.0/16.0)
+				}
+				colors[y+1][x].color.R = colors[y+1][x].color.R + quant_error*(5.0/16.0)
+				if x+1 < len(colors[0]) {
+					colors[y+1][x+1].color.R = colors[y+1][x+1].color.R + quant_error*(1.0/16.0)
+				}
+			}
+		}
+	}
+
+	return canvas.String()
 }
 
 // Returns the palette index closest to the color in the current mode
