@@ -48,7 +48,11 @@ func Grayscale(img image.Image) image.Image {
 	gray := image.NewGray16(bounds)
 	for y := bounds.Min.Y; y < bounds.Max.Y; y++ {
 		for x := bounds.Min.X; x < bounds.Max.X; x++ {
-			gray.Set(x, y, img.At(x, y))
+			if !IsTransparent(img.At(x, y)) {
+				gray.Set(x, y, img.At(x, y))
+			} else {
+				gray.Set(x, y, color.White)
+			}
 		}
 	}
 	return gray
