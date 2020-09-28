@@ -252,7 +252,7 @@ func ColorString(mode RenderMode, px Pixel) string {
 //
 
 func StartFGColor(mode RenderMode) string {
-	if mode == irc {
+	if mode == irc || mode == irc16 {
 		return "\x03"
 	} else {
 		// Foreground color selector is 38;
@@ -265,7 +265,7 @@ func StartFGColor(mode RenderMode) string {
 }
 
 func StartBGColor(mode RenderMode) string {
-	if mode == irc {
+	if mode == irc || mode == irc16 {
 		return ","
 	} else {
 		// Background color selector is 48;
@@ -278,7 +278,7 @@ func StartBGColor(mode RenderMode) string {
 }
 
 func EndColor(mode RenderMode) string {
-	if mode != irc {
+	if mode != irc && mode != irc16 {
 		// ANSI escape sequences are terminated by 'm'
 		return "m"
 	}
@@ -286,7 +286,7 @@ func EndColor(mode RenderMode) string {
 }
 
 func Clear(mode RenderMode) string {
-	if mode != irc {
+	if mode != irc && mode != irc16 {
 		return "\x1B[0m"
 	}
 	return ""
@@ -342,8 +342,8 @@ func Render(mode RenderMode, use_spaces bool, colors [][]Pixel) string {
 				prev_fg_col = ""
 				prev_bg_col = ""
 			} else if prev_fg_col != next_fg_col || prev_bg_col != next_bg_col {
-				if mode == irc || prev_fg_col != next_fg_col {
-					if mode == irc && next_fg_col == "" {
+				if (mode == irc || mode == irc16) || prev_fg_col != next_fg_col {
+					if (mode == irc || mode == irc16) && next_fg_col == "" {
 						next_fg_col = "0"
 					}
 					buffer.WriteString(StartFGColor(mode))

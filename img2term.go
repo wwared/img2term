@@ -16,6 +16,7 @@ var memprofile = flag.String("memprofile", "", "write memory profile to `file`")
 
 func main() {
 	flagIRC := flag.Bool("irc", false, "Output IRC color codes")
+	flagIRC16 := flag.Bool("irc16", false, "Output IRC colors codes (compatibility mode)")
 	flag256 := flag.Bool("256", false, "Use 256 colors")
 	flag24bit := flag.Bool("24bit", false, "Use 24-bit colors")
 	flagBraille := flag.Bool("braille", false, "Use braille characters") // TODO add color support
@@ -46,7 +47,7 @@ func main() {
 	mode := term16
 	setMode := func(m RenderMode) {
 		if mode != term16 {
-			fmt.Print("Only one of -irc, -256 or -24bit must be given")
+			fmt.Print("Only one of -irc, -irc16, -256 or -24bit must be given")
 			os.Exit(1)
 		}
 		mode = m
@@ -59,6 +60,9 @@ func main() {
 	}
 	if *flagIRC {
 		setMode(irc)
+	}
+	if *flagIRC16 {
+		setMode(irc16)
 	}
 	if *flagBraille {
 		setMode(braille)
