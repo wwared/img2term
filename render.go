@@ -220,7 +220,7 @@ func RenderBraille(colors [][]Pixel) string {
 		}
 	}
 
-	return canvas.String()
+	return strings.Replace(canvas.String(), string('⠀'), string(' '), -1)
 }
 
 // Returns the palette index closest to the color in the current mode
