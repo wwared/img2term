@@ -6,6 +6,7 @@ import (
 	"image"
 	"image/color"
 	"strconv"
+	"strings"
 
 	"github.com/disintegration/imaging"
 	"github.com/exrook/drawille-go"
@@ -18,9 +19,12 @@ type Pixel struct {
 }
 
 // Rendering entrypoint
-func RenderToText(img image.Image, grayscale bool, autocrop bool, use_spaces bool, width int, height int, mode RenderMode) string {
+func RenderToText(img image.Image, grayscale bool, invert bool, autocrop bool, use_spaces bool, width int, height int, mode RenderMode) string {
 	if grayscale || mode == braille {
 		img = Grayscale(img)
+	}
+	if invert {
+		img = imaging.Invert(img)
 	}
 	if autocrop {
 		img = CropBorders(img)

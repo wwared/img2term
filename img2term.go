@@ -3,11 +3,12 @@ package main
 import (
 	"flag"
 	"fmt"
-	"golang.org/x/crypto/ssh/terminal"
 	"log"
 	"os"
 	"runtime"
 	"runtime/pprof"
+
+	"golang.org/x/crypto/ssh/terminal"
 )
 
 var cpuprofile = flag.String("cpuprofile", "", "write cpu profile to `file`")
@@ -22,6 +23,7 @@ func main() {
 	// flagAnimated := flag.Bool("animated", false, "Animated GIF playback")
 	flagSpaces := flag.Bool("spaces", false, "Use 2 spaces per pixel instead of fitting two pixels in ▀")
 	flagGrayscale := flag.Bool("gray", false, "Make the image grayscale")
+	flagInvert := flag.Bool("invert", false, "Invert the image colors (useful with -braille)")
 	flagAutocrop := flag.Bool("crop", false, "Automatically crop out same-color or transparent borders")
 	flagAutoresize := flag.Bool("autoresize", false, "Automatically downscale image so it fits your terminal")
 	flagResizeW := flag.Int("width", 0, "Downscale image if greater than width")
@@ -77,7 +79,7 @@ func main() {
 	}
 	for _, file := range flag.Args() {
 		img := DecodeImage(file)
-		res := RenderToText(img, *flagGrayscale, *flagAutocrop, *flagSpaces, w, h, mode)
+		res := RenderToText(img, *flagGrayscale, *flagInvert, *flagAutocrop, *flagSpaces, w, h, mode)
 		fmt.Print(res)
 	}
 
